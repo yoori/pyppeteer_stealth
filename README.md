@@ -35,8 +35,8 @@ stealth(
   languages: [str] = ["en-US", "en"],
   vendor: str = "Google Inc."
   user_agent: str = None,
-  language: str = "en-US,en",
-  platform: str = "Win32",
+  locale: str = "en-US,en",
+  mask_linux: bool = True,
   webgl_vendor: str = "Intel Inc.",
   renderer: str = "Intel Iris OpenGL Engine",
 )
