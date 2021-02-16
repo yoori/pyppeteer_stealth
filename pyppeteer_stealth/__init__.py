@@ -47,5 +47,5 @@ async def stealth(page: Page, disabled_evasions: list = [], **kwargs) -> None:
 
     await with_utils(page, **kwargs)
 
-    for evasion_name, evasion in evasion_dict.items():
+    for evasion in evasion_dict.values():
         await evasion(page, **kwargs)
