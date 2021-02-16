@@ -39,6 +39,7 @@ stealth(
   mask_linux: bool = True,
   webgl_vendor: str = "Intel Inc.",
   renderer: str = "Intel Iris OpenGL Engine",
+  disabled_evasions: list = [],
 )
 ```
 
