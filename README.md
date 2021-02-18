@@ -39,7 +39,26 @@ stealth(
   mask_linux: bool = True,
   webgl_vendor: str = "Intel Inc.",
   renderer: str = "Intel Iris OpenGL Engine",
+  disabled_evasions: list = [],
 )
+```
+
+List of valid evasion names to pass into `disabled_evasions`:
+```python
+['chrome_app',
+ 'chrome_runtime',
+ 'iframe_content_window',
+ 'media_codecs',
+ 'sourceurl',
+ 'navigator_hardware_concurrency',
+ 'navigator_languages',
+ 'navigator_permissions',
+ 'navigator_plugins',
+ 'navigator_vendor',
+ 'navigator_webdriver',
+ 'user_agent_override',
+ 'webgl_vendor',
+ 'window_outerdimensions']
 ```
 
 ## Test results

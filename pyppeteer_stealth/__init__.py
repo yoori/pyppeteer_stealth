@@ -12,27 +12,40 @@ from .navigator_plugins import navigator_plugins
 from .navigator_vendor import navigator_vendor
 from .navigator_webdriver import navigator_webdriver
 from .user_agent_override import user_agent_override
-from .utils import with_utils
 from .webgl_vendor import webgl_vendor
 from .window_outerdimensions import window_outerdimensions
+from .utils import with_utils
 
 
-async def stealth(page: Page, **kwargs) -> None:
+async def stealth(page: Page, disabled_evasions: list = [], **kwargs) -> None:
     if not isinstance(page, Page):
         raise ValueError("page must be pyppeteer.page.Page")
+    if not isinstance(disabled_evasions, list):
+        raise ValueError("disabled_evasions must be a list")
+
+    evasion_dict = {
+        "chrome_app": chrome_app,
+        "chrome_runtime": chrome_runtime,
+        "iframe_content_window": iframe_content_window,
+        "media_codecs": media_codecs,
+        "sourceurl": sourceurl,
+        "navigator_hardware_concurrency": navigator_hardware_concurrency,
+        "navigator_languages": navigator_languages,
+        "navigator_permissions": navigator_permissions,
+        "navigator_plugins": navigator_plugins,
+        "navigator_vendor": navigator_vendor,
+        "navigator_webdriver": navigator_webdriver,
+        "user_agent_override": user_agent_override,
+        "webgl_vendor": webgl_vendor,
+        "window_outerdimensions": window_outerdimensions,
+    }
+
+    for evasion in disabled_evasions:
+        if evasion not in evasion_dict:
+            raise ValueError("{} is not a valid evasion name".format(evasion))
+        del evasion_dict[evasion]
 
     await with_utils(page, **kwargs)
-    await chrome_app(page, **kwargs)
-    await chrome_runtime(page, **kwargs)
-    await iframe_content_window(page, **kwargs)
-    await media_codecs(page, **kwargs)
-    await sourceurl(page, **kwargs)
-    await navigator_hardware_concurrency(page, **kwargs)
-    await navigator_languages(page, **kwargs)
-    await navigator_permissions(page, **kwargs)
-    await navigator_plugins(page, **kwargs)
-    await navigator_vendor(page, **kwargs)
-    await navigator_webdriver(page, **kwargs)
-    await user_agent_override(page, **kwargs)
-    await webgl_vendor(page, **kwargs)
-    await window_outerdimensions(page, **kwargs)
+
+    for evasion in evasion_dict.values():
+        await evasion(page, **kwargs)
