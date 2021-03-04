@@ -101,7 +101,7 @@ async def user_agent_override(
     # In case of headless, override the acceptLanguage in CDP.
     # This is not preferred, as it messed up the header order.
     # On headful, we set the user preference language setting instead.
-    if '--headless' in page.browser.process.args:
+    if page.browser.process is not None and '--headless' in page.browser.process.args:
         override['acceptLanguage'] = locale or 'en-US,en'
 
     await page._client.send('Network.setUserAgentOverride', override)
