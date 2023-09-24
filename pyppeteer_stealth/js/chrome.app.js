@@ -53,20 +53,28 @@
     get isInstalled() {
       return false
     },
-
     getDetails: function getDetails() {
       if (arguments.length) {
         throw makeError.ErrorInInvocation(`getDetails`)
       }
       return null
     },
-    getIsInstalled: function getDetails() {
+    getIsInstalled: function getIsInstalled() {
       if (arguments.length) {
         throw makeError.ErrorInInvocation(`getIsInstalled`)
       }
       return false
     },
-    runningState: function getDetails() {
+    installState: function installState(callback) {
+      if (arguments.length != 1 || typeof arguments[0] !== 'function') {
+        const err = new TypeError(`Error in invocation of app.installState(function callback)`)
+        return utils.stripErrorWithAnchor(
+          err,
+          `at installState (eval at <anonymous>`
+        )
+      }
+    },
+    runningState: function runningState() {
       if (arguments.length) {
         throw makeError.ErrorInInvocation(`runningState`)
       }
