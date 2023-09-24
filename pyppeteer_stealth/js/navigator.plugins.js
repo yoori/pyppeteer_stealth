@@ -29,7 +29,16 @@
         // - If anything else than an integer (including as string) is provided it will return the first entry
         const isInteger = args[0] && Number.isInteger(Number(args[0])) // Cast potential string to number first, then check for integer
         // Note: Vanilla never returns `undefined`
-        return (isInteger ? dataArray[Number(args[0])] : dataArray[0]) || null
+        if (isInteger) {
+          var index = Number(args[0]);
+          if (index > 4294967295) { // Original item expect unsigned and truncate it (CloudFlare check).
+            index = index % 4294967296;
+          }
+
+          return dataArray[Number(args[0])] || null;
+        }
+
+        return dataArray[0] || null;
       }
     }),
     /** Returns the MimeType object with the specified name. */
@@ -201,9 +210,15 @@
   const data = {
     "mimeTypes": [
       {
+        "type": "text/pdf",
+        "suffixes": "pdf",
+        "description": "Portable Document Format",
+        "__pluginName": "Chrome PDF Viewer"
+      },
+      {
         "type": "application/pdf",
         "suffixes": "pdf",
-        "description": "",
+        "description": "Portable Document Format",
         "__pluginName": "Chrome PDF Viewer"
       },
       {
@@ -227,16 +242,34 @@
     ],
     "plugins": [
       {
-        "name": "Chrome PDF Plugin",
+        "name": "PDF Viewer",
         "filename": "internal-pdf-viewer",
         "description": "Portable Document Format",
-        "__mimeTypes": ["application/x-google-chrome-pdf"]
+          "__mimeTypes": ["text/pdf", "application/pdf"]
       },
       {
         "name": "Chrome PDF Viewer",
-        "filename": "mhjfbmdgcfjbbpaeojofohoefgiehjai",
-        "description": "",
-        "__mimeTypes": ["application/pdf"]
+        "filename": "internal-pdf-viewer",
+        "description": "Portable Document Format",
+        "__mimeTypes": ["text/pdf", "application/pdf"]
+      },
+      {
+        "name": "Chromium PDF Viewer",
+        "filename": "internal-pdf-viewer",
+        "description": "Portable Document Format",
+        "__mimeTypes": ["text/pdf", "application/pdf"]
+      },
+      {
+        "name": "Microsoft Edge PDF Viewer",
+        "filename": "internal-pdf-viewer",
+        "description": "Portable Document Format",
+        "__mimeTypes": ["text/pdf", "application/pdf"]
+      },
+      {
+        "name": "WebKit built-in PDF",
+        "filename": "internal-pdf-viewer",
+        "description": "Portable Document Format",
+        "__mimeTypes": ["text/pdf", "application/pdf"]
       },
       {
         "name": "Native Client",
