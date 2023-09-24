@@ -498,5 +498,18 @@
     })
   })
 
+  /**
+   * Wraps property with [native code] kind
+   * Return correct values in next cases :
+   *   object.${propertyName}.toString : ƒ toString() { [native code] }
+   *   Object.getOwnPropertyDescriptor(Object.getPrototypeOf(object), '${propertyName}').get.toString() : 'function get ${propertyName}() { [native code] }'
+   */
+  utils.addNativeProperty = (object, propertyName, getter) => {
+    function LocalGetter() { return getter(); } ;
+    LocalGetter.toString = function() { return 'function get ' + propertyName + '() { [native code] }'; };
+    LocalGetter.prototype.toString = function() { return 'function get ' + propertyName + ' { [native code] }'; };
+    Object.defineProperty(Object.getPrototypeOf(object), propertyName, { get: LocalGetter });
+  }
+
   utils.preloadCache()
 }
